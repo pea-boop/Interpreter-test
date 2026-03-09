@@ -12,12 +12,7 @@ commands_file = json_file(f"{folder}\\commands.json")
 
 
 def DEBUG_read_files():
-    return get_specified_byte_code("add")
-
-
-
-
-
+    return format_byte_code(get_specified_byte_code("add"),8)
 
 def get_specified_byte_code(instruction_name : str):
     """
@@ -40,8 +35,8 @@ def instruction_exists(instruction_name : str) -> bool:
 
 
 
-def format_byte_code(byte_code : int) -> str:
-    formated_byte = "{0:b}"
-    return formated_byte.format(byte_code)
+def format_byte_code(byte_code : int, ammount_of_bytes : int) -> str:
+    
+    return format(byte_code, f"0{ammount_of_bytes}b")
 
 print(DEBUG_read_files())
