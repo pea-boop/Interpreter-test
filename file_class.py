@@ -18,29 +18,34 @@ class json_file():
     """
 
     def __init__(self : json_file, file_name : str, folder : str = "")->None:
-        self.file      = self.open_file(file_name, folder)
+        self.filepath      = self.set_file_path(file_name, folder)
+
    
 
 
-    def open_file(self : json_file, file_name : str, folder : str):
+    def set_file_path(self : json_file, file_name : str, folder : str):
         if folder != "": 
-            file_path = f"{folder}\\{file_name}"
+            self.file_path = f"{folder}\\{file_name}"
         else:
-            file_path = f"{file_name}"
-
-        with open(file_path, "r+",encoding = "utf-8") as file:
-            return file
+            self.file_path = f"{file_name}"
+        
+        
 
 
     def read(self : json_file) -> dict:
         
-        file = self.file
-        return json.load(file)
+        with open(self.file_path,"rt",encoding="utf-8") as file:
+            return json.load(file)
     
 
-    def write(self : json_file, message : str) -> dict:
+    def write(self : json_file, message : str, mode : str = "w"):
         """
-        Writes (not appends) a message to a specified JSON file
+        Writes (by deafult is set to the write mode) a message to a specified JSON file
+
+        Pamaters : 
         """
-        file = self.file
-        return json.dump(message, file)
+        with open(self.file_path, mode.lower(), encoding="utf-8") as file:
+            json.dump(message, file)
+    
+
+
