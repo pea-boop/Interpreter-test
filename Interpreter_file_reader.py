@@ -1,5 +1,5 @@
 import json
-from file_class import json_file
+from file_class import json_file, text_file
 
 
 
@@ -7,12 +7,24 @@ from file_class import json_file
 
 #global variables
 
-folder = "json_files"
-commands_file = json_file(f"{folder}\\commands.json")
+commands_folder = "json_files"
+commands_path = "commands.json"
+commands_file = json_file(f"{commands_folder}\\{commands_path}")
 
 
-def DEBUG_read_files():
-    return format_byte_code(get_specified_byte_code("add"),8)
+user_folder = "user_files"
+user_path = "user_text.txt"
+writeable_code_file = text_file(f"{user_folder}\\{user_path}")
+
+code_path = "compiled_code.txt"
+compiled_code_file = text_file(f"{user_folder}\\{code_path}")
+
+
+
+def split_code():
+    code = writeable_code_file.read()
+    new_code = code.split("\n")
+    return new_code
 
 def get_specified_byte_code(instruction_name : str):
     """
@@ -35,8 +47,26 @@ def instruction_exists(instruction_name : str) -> bool:
 
 
 
-def format_byte_code(byte_code : int, ammount_of_bytes : int) -> str:
+def format_byte_code(byte_code : int, ammount_of_bits : int) -> str:
     
-    return format(byte_code, f"0{ammount_of_bytes}b")
+    return format(byte_code, f"0{ammount_of_bits}b")
 
-print(DEBUG_read_files())
+
+
+
+
+def compile_code():
+    code = split_code()
+    new_code = ""
+    ammount_of_bits = 16
+
+
+    for line in code:
+        if instruction_exists(line):
+            byte_code = get_specified_byte_code(line)
+            formated_byte_code = format_byte_code(byte_code, ammount_of_bits)
+            new_code += formated_byte_code + "\n"
+        else:
+            pass #I HAVE NO IDEA
+
+    compiled_code_file.write(new_code)
